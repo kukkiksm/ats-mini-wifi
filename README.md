@@ -1,6 +1,6 @@
-# ATS Mini / Pocket Receiver (SI4732 + ESP32-S3)
+# ATS Mini / Pocket Receiver (SI4732 + ESP32-S3) + wifi + irremote + ws2812b rgb led
 
-This firmware is for use on the **SI4732 (ESP32-S3) Mini/Pocket Receiver**.
+This project is based on [esp32-si4732/ats-mini](https://github.com/esp32-si4732/ats-mini) and adds new functionality such as WiFi, IR remote control, RGB LED effects, and weather/AQI display.
 
 ---
 
