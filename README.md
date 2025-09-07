@@ -2,6 +2,11 @@
 
 This project is based on [esp32-si4732/ats-mini](https://github.com/esp32-si4732/ats-mini) and adds new functionality such as WiFi, IR remote control, RGB LED effects, and weather/AQI display.
 
+You can download the .bin file from the release and flash it at 0x0, then connect the circuit according to the diagram below to use it.
+
+![Circuit Diagram](https://raw.githubusercontent.com/kukkiksm/ats-mini-wifi/main/image/schem.png)
+![IR Remote](https://raw.githubusercontent.com/kukkiksm/ats-mini-wifi/main/image/irremote.jpg)
+
 ---
 
 ## Based on the following sources
