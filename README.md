@@ -4,8 +4,21 @@ This project is based on [esp32-si4732/ats-mini](https://github.com/esp32-si4732
 
 You can download the .bin file from the release and flash it at 0x0, then connect the circuit according to the diagram below to use it.
 
-![Circuit Diagram](https://raw.githubusercontent.com/kukkiksm/ats-mini-wifi/main/image/schem.png)
+![Circuit Diagram](https://raw.githubusercontent.com/kukkiksm/ats-mini-wifi/main/image/schem.png)  
 ![IR Remote](https://raw.githubusercontent.com/kukkiksm/ats-mini-wifi/main/image/irremote.jpg)
+
+### 📡 IR Remote Functions
+
+The remote control allows full operation of the receiver without touching the encoder knob:
+
+| Button | Function |
+|--------|----------|
+| **1–9** | Recall **Memory Slots 1–9** |
+| **\*** | **Cancel / Back** – exit menu immediately |
+| **#** | **RGB LED On/Off Toggle** |
+| **OK** | Confirm / Select |
+| **◀ ▶** | Adjust frequency **down / up** |
+| **▲ ▼** | Normal mode: **Volume up/down**<br>Menu mode: **Navigate menu items** |
 
 ---
 
@@ -36,4 +49,4 @@ The hardware, software, and flashing documentation is available at:
 
 - GitHub Discussions – the best place for feature requests, observations, sharing, etc.  
 - TalkRadio Telegram Chat – informal space to chat in Russian and English.  
-- **Si4732 Mini Receiver All Bands** – Facebook group (unofficial).
+- **Si4732 Mini Receiver All Bands** – Facebook group (unofficial).  
