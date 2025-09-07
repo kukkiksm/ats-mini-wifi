@@ -772,6 +772,11 @@ void loop()
   }
 #endif
 
+#if ENABLE_RGBLED
+  if (rgbOn)
+    rgb.update();
+#endif
+
 #ifndef DISABLE_REMOTE
   // Periodically print status to serial
   remoteTickTime();
