@@ -12,23 +12,20 @@
 #include "Themes.h"
 #include "Utils.h"
 #include "EIBI.h"
-
 #include <LittleFS.h>
 #include "Globals.h"
+#include "irremote.h"
+#include "rgbled.h"
 
 #ifndef FORMAT_LITTLEFS_IF_FAILED
 #define FORMAT_LITTLEFS_IF_FAILED true
 #endif
 
 #if ENABLE_IRREMOTE
-#include <IRremoteESP8266.h>
-#include <IRrecv.h>
-IRrecv irrecv(14);
-decode_results results;
+IRRemote ir(14);
 #endif
 
 #if ENABLE_RGBLED
-#include "rgbled.h"
 RGBLed rgb;
 #endif
 
@@ -158,7 +155,7 @@ void setup()
 
 //  Remote & RDG Led setup
 #if ENABLE_IRREMOTE
-  irrecv.enableIRIn();
+  ir.begin();
 #endif
 
 #if ENABLE_RGBLED
@@ -761,139 +758,18 @@ void recallMemorySlot(uint8_t idx)
   }
 }
 
-struct IRMap
-{
-  uint32_t code;
-  int action;
-};
-// action <0 = พิเศษ, >=0 = memory index
-IRMap irMap[] = {
-    {16718055, -1}, // Vol+
-    {16730805, -2}, // Vol-
-    {16716015, -3}, // Freq--
-    {16734885, -4}, // Freq++
-    {16753245, 0},  // mem0
-    {16736925, 1},  // mem1
-    {16769565, 2},  // mem2
-    {16720605, 3},  // mem3
-    {16712445, 4},  // mem4
-    {16761405, 5},  // mem5
-    {16769055, 6},  // mem6
-    {16754775, 7},  // mem7
-    {16748655, 8},  // mem8
-    {16750695, 9},  // mem9
-    {16738455, -5}, // *
-    {16756815, -6}, // #
-    {16726215, -7}  // OK
-};
-
-bool remoteClicked = false;
-
 void loop()
 {
   uint32_t currentTime = millis();
   bool needRedraw = false;
+  ButtonTracker::State pb1st = pb1.update(digitalRead(ENCODER_PUSH_BUTTON) == LOW);
 
 #if ENABLE_IRREMOTE
-  // IR Remote
-  if (irrecv.decode(&results))
+  ir.handle();
+  if (ir.wasRemoteClicked())
   {
-    uint32_t c = results.value;
-    for (auto &m : irMap)
-      if (m.code == c)
-      {
-        if (m.action >= 0)
-        {
-          recallMemorySlot(m.action);
-        }
-        else
-          switch (m.action)
-          {
-          case -1: // Vol+
-            if (isMenuMode(currentCmd) || isSettingsMode(currentCmd) || currentCmd == CMD_MENU)
-            {
-              encoderCount = -1; // จำลองการหมุน encoder ไปขวา
-            }
-            else
-            {
-              if (volume < 63)
-                volume++;
-              rx.setVolume(volume);
-            }
-            break;
-          case -2: // Vol-
-            if (isMenuMode(currentCmd) || isSettingsMode(currentCmd) || currentCmd == CMD_MENU)
-            {
-              encoderCount = +1; // จำลองการหมุน encoder ไปซ้าย
-            }
-            else
-            {
-              if (volume > 0)
-                volume--;
-              rx.setVolume(volume);
-            }
-            break;
-          case -3:
-            updateFrequency(currentFrequency - getCurrentStep()->step, true);
-            drawScreen();
-            break;
-          case -4:
-            updateFrequency(currentFrequency + getCurrentStep()->step, true);
-            drawScreen();
-            break;
-          case -5: // *
-
-#if ENABLE_RGBLED
-            Serial.println("Pressed * (toggle RGB)");
-            rgbOn = !rgbOn; // toggle สถานะ
-
-            if (rgbOn)
-            {
-              // เปิด → ตั้งสีใหม่แบบสุ่ม (หรือค้างค่าเดิมก็ได้)
-              CHSV hsv(random(256), 255, 255);
-              rgb.setHSV(hsv.h, hsv.s, hsv.v);
-            }
-            else
-            {
-              // ปิด → ดับ
-              rgb.off();
-            }
-#else
-            Serial.println("Pressed * (Band -)");
-            doBand(-1);
-            drawScreen();
-#endif
-
-            break;
-          case -6: // #
-            Serial.println("Pressed # (Band +)");
-            doBand(+1);
-            drawScreen();
-            break;
-          case -7: // OK
-            Serial.println("Pressed OK");
-            remoteClicked = true; // ตั้ง flag ว่ามีการกด OK
-            break;
-          }
-      }
-    irrecv.resume();
+    pb1st.wasClicked = true;
   }
-
-#if ENABLE_RGBLED
-  if (rgbOn)
-    rgb.update();
-#endif
-
-  ButtonTracker::State pb1st = pb1.update(digitalRead(ENCODER_PUSH_BUTTON) == LOW);
-
-  if (remoteClicked)
-  {
-    pb1st.wasClicked = true; // ทำให้เหมือนกด encoder click
-    remoteClicked = false;   // รีเซ็ต flag
-  }
-
-#else
-  ButtonTracker::State pb1st = pb1.update(digitalRead(ENCODER_PUSH_BUTTON) == LOW);
 #endif
 
 #ifndef DISABLE_REMOTE
