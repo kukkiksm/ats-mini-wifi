@@ -16,7 +16,7 @@ The remote control allows full operation of the receiver without touching the en
 | **1–9** | Recall **Memory Slots 1–9** |
 | **\*** | **Cancel / Back** – exit menu immediately |
 | **#** | **RGB LED On/Off Toggle** |
-| **0** | Change RGB effect |
+| **0** | Change **RGB effect** |
 | **OK** | Confirm / Select |
 | **◀ ▶** | Adjust frequency **down / up** |
 | **▲ ▼** | Normal mode: **Volume up/down**<br>Menu mode: **Navigate menu items** |
