@@ -160,7 +160,7 @@ void setup()
 
 #if ENABLE_RGBLED
   rgb.begin(10);
-  rgb.startPartyMode();
+  rgb.setMode(MODE_PARTY);
   rgb.off();
 #endif
 

@@ -9,9 +9,11 @@ void clockStoreLastSynced();
 extern unsigned long millisUpdateWeather;
 extern unsigned long lastConnectMillis2;
 
+extern bool rgbOn;
+extern int rgbeffect;
+
 extern bool shouldCycle;
 extern bool textStop;
-extern bool rgbOn;
 
 extern int visualStyle; 
 extern int weatherType;

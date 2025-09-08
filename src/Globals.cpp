@@ -6,9 +6,11 @@ static uint32_t lastSyncedMicros = 0;
 unsigned long millisUpdateWeather = 0;
 unsigned long lastConnectMillis2 = 0;
 
+bool rgbOn = false;
+int rgbeffect = 0;
+
 bool shouldCycle = false;
 bool textStop = false;
-bool rgbOn = false;
 
 int doText = 1;
 int roundLoop = 0;
